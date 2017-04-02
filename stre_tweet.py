@@ -11,6 +11,8 @@ from kafka.common import LeaderNotAvailableError
 from kafka import KafkaProducer
 #Extras 
 import subprocess
+import os
+import pandas as pd
 #Variables that contains the user credentials to access Twitter API 
 access_token = "227835837-WD07ixlyOeLqkeywbnMYzk5dnebJjd1pA4sKpOjl"
 access_token_secret = "6utbaX2ab3UrpL4PpfSx6ToCuuQZgZ5zDDqKQq2albTLL"
@@ -35,8 +37,12 @@ class StdOutListener(StreamListener):
 	#Exectue wordcountdemo
         subprocess.call(['/opt/kafka/bin/kafka-run-class.sh', 'org.apache.kafka.streams.examples.wordcount.WordCountDemo'])
         #Place to delete the topic 
-
-	#
+        prueba=pd.read_table('twe_pre.txt', delim_whitespace=True, names=['word', 'count'])
+        fin_pru=prueba[prueba["count"] > 3]
+       # print(fin_pru)
+        fin_pru.to_csv(r'val3.txt', header=None, index=None, sep=' ', mode='a')
+       #subprocess.call(['cat', 'val3.txt', '|', '/opt/kafka/bin/kafka-console-producer.sh', '--broker-list', 'localhost:9092', '--topic', 'test'])
+        os.system('cat val3.txt | /opt/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test') 
         return True
 
     def on_error(self, status):

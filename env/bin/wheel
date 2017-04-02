@@ -1,4 +1,4 @@
-#!/home/administradorcito/Documentos/tweet_kafka/env/bin/python3.6
+#!/home/fernando/Documentos/tweet_kafka/env/bin/python3.5
 
 # -*- coding: utf-8 -*-
 import re
