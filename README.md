@@ -1,6 +1,6 @@
 # tweet_kafka
 
-## Para Conteo en shell
+## Para Conteo en shell (ya no es necesario)
   **cat nuevo2.txt | grep [3-9] | /opt/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test**
   
 ## Ingreso en un archivo
@@ -20,8 +20,6 @@
 * 2
 	** /opt/kafka/bin/kafka-console-consumer.sh --zookeeper localhost:2181           --topic streams-wordcount-output           --from-beginning           --formatter kafka.tools.DefaultMessageFormatter           --property print.key=true           --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer           --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer > twe_pre.txt **
 
-* 3
-	** cat twe_pre.txt | grep "[3-9]$" | /opt/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test **
 
-* 4 
+* 3 
 	** /opt/kafka/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic test --from-beginning **
