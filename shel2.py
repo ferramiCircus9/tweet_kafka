@@ -22,14 +22,19 @@ class StdOutListener(StreamListener):
     def on_data(self, data):
         #Only text 
         json_load = json.loads(data)
-        texts=json_load['text']
+        texts=json_load['text'].split()
 	
         print(texts,"\n\n")
         
         del json_load["text"]
         print (json_load)
         
-        json_load['nuevo']= 3
+        wordfreq = []
+        for w in texts:
+            wordfreq.append(texts.count(w))
+
+        maw=max(list(zip(wordfreq, texts)))
+        json_load['nuevo']= maw
         print("\n\n",json_load)
 
         return True

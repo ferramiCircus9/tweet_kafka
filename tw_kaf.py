@@ -6,6 +6,9 @@ import json
 #Import kafka for python
 import time
 
+from kafka import SimpleProducer, KafkaClient
+from kafka.common import LeaderNotAvailableError
+from kafka import KafkaProducer
 
 import subprocess
 
@@ -15,22 +18,16 @@ access_token_secret = "6utbaX2ab3UrpL4PpfSx6ToCuuQZgZ5zDDqKQq2albTLL"
 consumer_key = "dwazigqjw1ZIVtx2jKGGsw2wb"
 consumer_secret = "Lyy1wItpyPTfPWIBJ5d2qrA250s3iydzwKaCubVAamOTOecK2A"
 
+producer = KafkaProducer(bootstrap_servers='localhost:9092')
+
 #subprocess.call(['/opt/kafka/bin/kafka-console-producer.sh', '--broker-list', 'localhost:9092', '--topic', 'test'])
 
 class StdOutListener(StreamListener):
 
     def on_data(self, data):
-        #Only text 
+
         json_load = json.loads(data)
-        texts=json_load['text']
-	
-        print(texts,"\n\n")
-        
-        del json_load["text"]
-        print (json_load)
-        
-        json_load['nuevo']= 3
-        print("\n\n",json_load)
+        producer.send('el_mon', data.encode())
 
         return True
 

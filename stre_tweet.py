@@ -16,8 +16,8 @@ import pandas as pd
 #Variables that contains the user credentials to access Twitter API 
 access_token = "227835837-WD07ixlyOeLqkeywbnMYzk5dnebJjd1pA4sKpOjl"
 access_token_secret = "6utbaX2ab3UrpL4PpfSx6ToCuuQZgZ5zDDqKQq2albTLL"
-consumer_key = "Hb7vtK1V0g3BHtL3Q8xwCnLi7"
-consumer_secret = "hJcun1eoeyLWacZpqRh8VEj05uCSJtHzs4yzrQhwKczqbj2KvM"
+consumer_key = "dwazigqjw1ZIVtx2jKGGsw2wb"
+consumer_secret = "Lyy1wItpyPTfPWIBJ5d2qrA250s3iydzwKaCubVAamOTOecK2A"
 
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
 #This is a basic listener that just prints received tweets to stdout.
@@ -38,11 +38,13 @@ class StdOutListener(StreamListener):
         subprocess.call(['/opt/kafka/bin/kafka-run-class.sh', 'org.apache.kafka.streams.examples.wordcount.WordCountDemo'])
         #Place to delete the topic 
         prueba=pd.read_table('twe_pre.txt', delim_whitespace=True, names=['word', 'count'])
-        fin_pru=prueba[prueba["count"] > 3]
+        fin_pru=prueba[prueba["count"] > 2]
        # print(fin_pru)
         fin_pru.to_csv(r'val3.txt', header=None, index=None, sep=' ', mode='a')
        #subprocess.call(['cat', 'val3.txt', '|', '/opt/kafka/bin/kafka-console-producer.sh', '--broker-list', 'localhost:9092', '--topic', 'test'])
         os.system('cat val3.txt | /opt/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test') 
+        os.system('rm -Rf /tmp/kafka-streams')
+        os.system('echo  > twe_pre.txt && echo  > val3.txt')
         return True
 
     def on_error(self, status):
@@ -58,5 +60,4 @@ if __name__ == '__main__':
     stream = Stream(auth, l)
 
     #This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
-    stream.filter(track=['playstation'])
-
+stream.filter(track=['playstation'])

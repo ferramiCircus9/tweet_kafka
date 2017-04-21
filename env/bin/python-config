@@ -1,4 +1,4 @@
-#!/home/fernando/Documentos/tweet_kafka/env/bin/python
+#!/home/administradorcito/Documentos/tweet_kafka/env/bin/python
 
 import sys
 import getopt

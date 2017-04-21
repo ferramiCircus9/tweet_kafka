@@ -1,0 +1,2 @@
+python tw_kaf.py & python kaf_el.py && fg
+
