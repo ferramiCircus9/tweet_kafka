@@ -31,15 +31,20 @@ def main():
             #es.index(index='feremi', doc_type='kafel', id=now.strftime("%Y-%m-%d %H:%M:%S.%f"), body= dmes)
             es.index(index='feremi', doc_type='kafel', body= dmes)
             #hola=es.get(index='feremi', doc_type='kafel', id=now.strftime("%Y-%m-%d %H:%M:%S.%f"))
+            print(dmes)
+            sleep(10)
             json_load =  json.loads(dmes)
             texts=json_load['text'].split()
             del json_load['text']
             wordfreq = []
             for w in texts:
                 wordfreq.append(texts.count(w))
-            maw=max(list(zip(wordfreq, texts)))
-            json_load['favorita']= maw
-            cursor=db.tweets.insert(json_load)
+            if(max(wordfreq) >= 3):
+            	maw=max(list(zip(wordfreq, texts)))
+            	json_load['favorita']= maw
+            	cursor=db.tweets.insert(json_load)
+            #else:
+            	#js_load['favorita']= 'no hay palabras'
             #nueid=cursor.inserted_id
             print(cursor)
 	        #count=count+1
