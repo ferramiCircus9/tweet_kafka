@@ -1,0 +1,53 @@
+--Event 15
+SELECT
+dt.DATE_TIME,
+upper(dt.GEO_COUNTRY) as GEO_COUNTRY,
+dt.POST_VISID_HIGH || dt.POST_VISID_LOW || dt.VISIT_NUM || dt.VISIT_START_TIME_GMT as CON_VISIT,
+dt.P_EVAR7,
+dt.PROP22,
+dt.P_EVAR12,
+dt.P_EVAR10,
+dt.prop4,
+dt.P_EVAR9,
+   dt.post_pagename as PAGENAME,
+sum(EVENT15)
+
+FROM (SELECT hit.* FROM DATAHUB_MART.DM_F_WA_HIT_DATA hit,
+datahub_mart.dm_d_wa_report_suite rs
+WHERE hit.dwh_report_suite = rs.dwh_id and rs.rsid = 'rochedialogo3') dt
+
+INNER JOIN
+(
+SELECT
+post_event_list,
+hit.dwh_id,
+count(post_event_list) as EVENT15
+
+FROM DATAHUB_MART.DM_F_WA_HIT_DATA hit,
+    datahub_mart.dm_d_wa_report_suite rs
+WHERE hit.dwh_report_suite = rs.dwh_id and rs.rsid = 'rochedialogo3'
+AND date_time >= ADD_MONTHS( current_date , -24 ) and date_time < current_date
+AND (POST_EVENT_LIST like '%214%')
+and EXCLUDE_HIT  <= 0
+and HIT_SOURCE <> 5 and HIT_SOURCE <> 7 and HIT_SOURCE <> 8 and HIT_SOURCE <> 9
+and (POST_PAGE_EVENT = 100 OR POST_PAGE_EVENT = 0)
+
+GROUP BY post_event_list, hit.dwh_id) tb_15 on dt.dwh_id = tb_15.dwh_id
+
+where date_time >= ADD_MONTHS( current_date , -24 ) and date_time < current_date
+and EXCLUDE_HIT  <= 0
+and HIT_SOURCE <> 5 and HIT_SOURCE <> 7 and HIT_SOURCE <> 8 and HIT_SOURCE <> 9
+and (POST_PAGE_EVENT = 100 OR POST_PAGE_EVENT = 0)
+
+GROUP BY
+dt.DATE_TIME,
+dt.P_EVAR12,
+dt.P_EVAR10,
+dt.GEO_COUNTRY,
+dt.P_EVAR7,
+dt.PROP22,
+dt.POST_VISID_HIGH || dt.POST_VISID_LOW || dt.VISIT_NUM || dt.VISIT_START_TIME_GMT,
+dt.prop4,
+dt.P_EVAR9,
+   dt.post_pagename
+;
